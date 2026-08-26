@@ -10,7 +10,6 @@ export default function DateInvitation() {
     contact: ''
   });
 
-  // Tự động chuyển từ bước "YAAAY" sang Form chọn lịch sau 3 giây
   useEffect(() => {
     if (step === 2) {
       const timer = setTimeout(() => setStep(3), 3000);
@@ -39,12 +38,11 @@ export default function DateInvitation() {
     setStep(step + 1);
   };
 
-  // Hàm gửi dữ liệu về Formspree và hiện màn hình cảm ơn luôn (bỏ trang tổng kết)
   const handleSubmit = async () => {
-    setStep(6); // Chuyển thẳng sang màn hình thông báo hoàn tất cuối cùng
+    setStep(6); 
     
     try {
-      await fetch("DÁN_LINK_FORMSPREE_CỦA_BẠN_VÀO_ĐÂY", {
+      await fetch("https://formspree.io/f/mqpkzzzg", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
