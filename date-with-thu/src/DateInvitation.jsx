@@ -5,6 +5,7 @@ export default function DateInvitation() {
   const [noButtonStyle, setNoButtonStyle] = useState({});
   const [formData, setFormData] = useState({
     dateType: '',
+    dateWhen: '',
     location: '',
     contact: ''
   });
@@ -17,7 +18,7 @@ export default function DateInvitation() {
     }
   }, [step]);
 
-  // Hàm làm nút Không chạy trốn
+  // Hàm làm nút Không chạy trốn khi rê chuột vào hoặc click
   const handleNoHover = () => {
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
@@ -38,20 +39,19 @@ export default function DateInvitation() {
     setStep(step + 1);
   };
 
-  // Hàm gửi dữ liệu về Formspree
+  // Hàm gửi dữ liệu về Formspree và hiện màn hình cảm ơn luôn (bỏ trang tổng kết)
   const handleSubmit = async () => {
-    // Chuyển sang màn hình thành công (bước 6) ngay lập tức
-    setStep(6); 
+    setStep(6); // Chuyển thẳng sang màn hình thông báo hoàn tất cuối cùng
     
-    // Đẩy dữ liệu về email của bạn
     try {
-      await fetch("https://formspree.io/f/mqpkzzzg", {
+      await fetch("DÁN_LINK_FORMSPREE_CỦA_BẠN_VÀO_ĐÂY", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           "Hoạt động": formData.dateType,
+          "Thời gian": formData.dateWhen,
           "Địa điểm": formData.location,
           "Liên hệ": formData.contact,
         }),
@@ -62,23 +62,21 @@ export default function DateInvitation() {
   };
 
   return (
-    // Nền dải màu hồng pastel siêu ngọt ngào
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-pink-100 to-rose-100 relative overflow-hidden font-sans p-4">
       
-      {/* Khung Card trắng bo góc */}
       <div className="bg-white p-8 rounded-[2rem] shadow-xl max-w-lg w-full text-center z-10 transition-all duration-500">
         
-        {/* BƯỚC 0: Lời chào */}
+        {/* BƯỚC 0: Lời chào kiểu người yêu 2 năm */}
         {step === 0 && (
           <div className="animate-fade-in">
-            <div className="text-4xl mb-4">🌸</div>
-            <h2 className="text-2xl font-bold text-pink-600 mb-2">Chào đằng ấy nha!</h2>
-            <p className="text-gray-500 mb-8">Tớ có chuyện này muốn nói với cậu lâu rồi... nhưng mà hơi ngại ngùng một chút 👉👈</p>
+            <div className="text-4xl mb-4">🥰</div>
+            <h2 className="text-2xl font-bold text-pink-600 mb-2">Bé iu của anh ơi!</h2>
+            <p className="text-gray-500 mb-8">Tròn 2 năm bên nhau rồi đấy, nay anh chuẩn bị sẵn kèo đi chơi kỷ niệm nè, bấm xem đi đâu nha 👇</p>
             <button 
               onClick={() => setStep(1)}
               className="bg-pink-500 hover:bg-pink-600 text-white font-medium py-3 px-8 rounded-full transition-colors transform hover:scale-105"
             >
-              Chuyện gì dạ? ➔
+              Đi đâu thế ta? ➔
             </button>
           </div>
         )}
@@ -87,16 +85,17 @@ export default function DateInvitation() {
         {step === 1 && (
           <div className="animate-fade-in">
             <div className="text-4xl mb-4 text-pink-500">💖</div>
-            <h2 className="text-2xl font-bold text-pink-600 mb-2">Cuối tuần này đi chơi với tớ nhé?</h2>
-            <p className="text-gray-500 mb-8">Tớ hứa sẽ mua đồ ăn ngon cho cậu :)</p>
+            <h2 className="text-2xl font-bold text-pink-600 mb-2">Mình đi "hâm nóng tình cảm" với nhau nhé?</h2>
+            <p className="text-gray-500 mb-8">Đi chơi với người yêu 2 năm thì không được từ chối đâu nha :P</p>
             
             <div className="flex gap-4 justify-center items-center">
               <button 
                 onClick={() => setStep(2)}
                 className="bg-pink-500 hover:bg-pink-600 text-white font-medium py-3 px-8 rounded-xl transition-all hover:scale-110 shadow-md"
               >
-                Có chớ! 🥰
+                Dạ chớ! 🥰
               </button>
+              
               <button 
                 onMouseEnter={handleNoHover}
                 onClick={handleNoHover}
@@ -113,9 +112,9 @@ export default function DateInvitation() {
         {step === 2 && (
           <div className="animate-fade-in py-8">
             <div className="text-4xl mb-4">✨💕✨</div>
-            <h2 className="text-3xl font-bold text-pink-500 mb-2">YAAAAY!!!</h2>
-            <p className="text-gray-600">Cậu vừa làm tớ trở thành người hạnh phúc nhất trần đời đó!</p>
-            <p className="text-pink-500 font-bold mt-2">Chốt đơn nha! 🥂</p>
+            <h2 className="text-3xl font-bold text-pink-500 mb-2">BIẾT NGAY MÀ!</h2>
+            <p className="text-gray-600">Yêu nhau 2 năm rồi mà còn định bấm nút không à nha! 😎</p>
+            <p className="text-pink-500 font-bold mt-2">Giờ thì lên lịch chi tiết thôi nào! 🥂</p>
           </div>
         )}
 
@@ -123,8 +122,8 @@ export default function DateInvitation() {
         {step === 3 && (
           <div className="animate-fade-in">
             <div className="text-4xl mb-4">🗓️</div>
-            <h2 className="text-2xl font-bold text-pink-600 mb-2">Mình đi đâu chơi nhỉ?</h2>
-            <p className="text-gray-500 mb-6">Cậu cứ chọn hoạt động mà cậu thích nha!</p>
+            <h2 className="text-2xl font-bold text-pink-600 mb-2">Kỷ niệm 2 năm mình làm gì nhỉ?</h2>
+            <p className="text-gray-500 mb-6">Em cứ chọn hoạt động thích nhất nha!</p>
             
             <div className="grid grid-cols-2 gap-3">
               {['☕ Đi cà phê chill chill', '🍝 Ăn tối lãng mạn', '🍿 Đi xem phim', '🏛️ Đi bảo tàng/Triển lãm', '🌳 Dạo công viên', '🎮 Chơi game chung'].map((item) => (
@@ -140,15 +139,40 @@ export default function DateInvitation() {
           </div>
         )}
 
-        {/* BƯỚC 4: Chọn địa điểm */}
+        {/* BƯỚC 4: Tự chọn ngày giờ */}
         {step === 4 && (
           <div className="animate-fade-in">
+            <div className="text-4xl mb-4 text-pink-500">⏰</div>
+            <h2 className="text-2xl font-bold text-pink-600 mb-2">Hôm nào thì xuất phát được ta?</h2>
+            <p className="text-gray-500 mb-6">Chọn ngày giờ chính xác để anh chuẩn bị đón nhé!</p>
+            
+            <div className="flex flex-col gap-4">
+              <input 
+                type="datetime-local" 
+                value={formData.dateWhen}
+                onChange={(e) => setFormData({...formData, dateWhen: e.target.value})}
+                className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-300 text-gray-700 font-medium cursor-pointer"
+              />
+              <button 
+                onClick={() => setStep(5)}
+                disabled={!formData.dateWhen}
+                className="bg-pink-500 hover:bg-pink-600 disabled:bg-pink-300 text-white font-medium py-4 rounded-xl transition-colors w-full flex items-center justify-center gap-2 shadow-md"
+              >
+                Tiếp tục ➔
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* BƯỚC 5: Chọn địa điểm */}
+        {step === 5 && (
+          <div className="animate-fade-in">
             <div className="text-4xl mb-4 text-pink-500">📍</div>
-            <h2 className="text-2xl font-bold text-pink-600 mb-2">Cậu muốn hẹn ở đâu?</h2>
-            <p className="text-gray-500 mb-6">Chọn một địa điểm thật ưng ý nhé!</p>
+            <h2 className="text-2xl font-bold text-pink-600 mb-2">Địa điểm hẹn hò ở đâu nè?</h2>
+            <p className="text-gray-500 mb-6">Chọn chỗ nào thật đáng nhớ nhé!</p>
             
             <div className="grid grid-cols-2 gap-3">
-              {['Chỗ cậu hay đi', 'Chỗ tớ hay đi', 'Tạo bất ngờ cho tớ đi!', "Tới đó rồi tính tiếp 🛵"].map((item) => (
+              {['Chỗ cũ kỷ niệm', 'Quán mới mở', 'Tạo bất ngờ cho em đi!', "Tới đó rồi tính tiếp 🛵"].map((item) => (
                 <button 
                   key={item}
                   onClick={() => handleSelect('location', item)}
@@ -161,64 +185,23 @@ export default function DateInvitation() {
           </div>
         )}
 
-        {/* BƯỚC 5: Liên lạc */}
-        {step === 5 && (
-          <div className="animate-fade-in">
-            <div className="text-4xl mb-4">💭</div>
-            <h2 className="text-2xl font-bold text-pink-600 mb-2">Tớ liên lạc với cậu qua đâu nè?</h2>
-            <p className="text-gray-500 mb-6">Để lại thông tin để tớ qua đón nha!</p>
-            
-            <div className="flex flex-col gap-4">
-              <input 
-                type="text" 
-                placeholder="SĐT, Zalo, Instagram..." 
-                value={formData.contact}
-                onChange={(e) => setFormData({...formData, contact: e.target.value})}
-                className="w-full p-4 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-pink-300 text-gray-700"
-              />
-              <button 
-                onClick={handleSubmit}
-                disabled={!formData.contact}
-                className="bg-pink-500 hover:bg-pink-600 disabled:bg-pink-300 text-white font-medium py-4 rounded-xl transition-colors w-full flex items-center justify-center gap-2"
-              >
-                Gửi ngay 💌
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* BƯỚC 6: Tổng kết */}
+        {/* BƯỚC 6: Liên lạc (Chuyển thành màn hình xác nhận cuối cùng sau khi bấm Gửi) */}
         {step === 6 && (
-          <div className="animate-fade-in">
-            <div className="text-4xl mb-4">✨</div>
-            <h2 className="text-2xl font-bold text-pink-500 mb-6">Tuyệt vời! 🎉</h2>
-            
-            <div className="bg-pink-50 p-6 rounded-2xl text-left mb-8 border border-pink-100">
-              <div className="mb-3">
-                <span className="text-pink-400 text-sm block">Hoạt động</span>
-                <span className="text-gray-800 font-medium">{formData.dateType}</span>
-              </div>
-              <div className="mb-3">
-                <span className="text-pink-400 text-sm block">Địa điểm</span>
-                <span className="text-gray-800 font-medium">{formData.location}</span>
-              </div>
-              <div>
-                <span className="text-pink-400 text-sm block">Liên lạc</span>
-                <span className="text-gray-800 font-medium">{formData.contact}</span>
-              </div>
-            </div>
-
-            <p className="text-gray-800 font-medium mb-1">Tớ sẽ chủ động nhắn cho cậu sớm nha! ❤️</p>
-            <p className="text-gray-500 text-sm mb-6">Mong chờ tới ngày được đi chơi quá đi 🥰</p>
+          <div className="animate-fade-in py-6">
+            <div className="text-5xl mb-4">💖</div>
+            <h2 className="text-3xl font-bold text-pink-500 mb-3">Đã chốt đơn kỷ niệm 2 năm!</h2>
+            <p className="text-gray-700 font-medium mb-2">Thông tin lịch trình đã gửi về máy tớ rồi nhé.</p>
+            <p className="text-gray-500 text-sm mb-8">Cảm ơn vì đã luôn đồng hành cùng tớ suốt 2 năm qua. Yêu em nhiều lắm ❤️</p>
             
             <button 
               onClick={() => {
                 setStep(0);
-                setFormData({ dateType: '', location: '', contact: '' });
+                setFormData({ dateType: '', dateWhen: '', location: '', contact: '' });
+                setNoButtonStyle({});
               }}
-              className="text-gray-400 hover:text-pink-400 text-sm font-medium underline transition-colors"
+              className="text-pink-400 hover:text-pink-600 text-sm font-medium underline transition-colors"
             >
-              Thử làm lại từ đầu
+              Xem lại từ đầu
             </button>
           </div>
         )}
