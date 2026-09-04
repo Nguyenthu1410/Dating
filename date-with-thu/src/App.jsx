@@ -1,4 +1,4 @@
-import DateInvitation from "./DateInvitation";
+import DateInvitation from "./components/DateInvitation";
 
 function App() {
   return (
