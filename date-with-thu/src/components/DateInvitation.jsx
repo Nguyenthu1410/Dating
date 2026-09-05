@@ -2,6 +2,9 @@ import React from 'react';
 import Confetti from 'react-confetti';
 import { useDateInvitationLogic } from './useDateInvitationLogic'; 
 
+// ==========================================
+// COMPONENT UI: THẺ POLAROID
+// ==========================================
 const PolaroidCard = ({ label, emoji, rotateClass, onClick }) => (
   <div 
     onClick={onClick}
@@ -15,6 +18,9 @@ const PolaroidCard = ({ label, emoji, rotateClass, onClick }) => (
   </div>
 );
 
+// ==========================================
+// COMPONENT UI: VÉ HẸN HÒ ẢO
+// ==========================================
 const VirtualTicket = ({ formData }) => (
   <div className="flex w-full max-w-2xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden mt-6 transform hover:scale-105 transition-transform duration-500 text-left">
     <div className="bg-rose-500 w-1/4 p-4 flex flex-col justify-center items-center border-r-4 border-dashed border-white relative">
@@ -54,6 +60,9 @@ const VirtualTicket = ({ formData }) => (
   </div>
 );
 
+// ==========================================
+// COMPONENT CHÍNH (LAYOUT)
+// ==========================================
 export default function DateInvitation() {
   const {
     step,
@@ -78,6 +87,36 @@ export default function DateInvitation() {
 
   return (
     <div className="min-h-screen bg-[#fdf2f8] flex flex-col items-center justify-center p-4 relative overflow-hidden font-sans">
+      
+      {/* ---------------- THÊM LẠI ÂM THANH & HIỆU ỨNG TẠI ĐÂY ---------------- */}
+      
+      {/* Nhạc nền */}
+      <audio ref={audioRef} loop>
+        <source src="/bg_music.mp3" type="audio/mpeg" />
+      </audio>
+
+      {/* Nút điều khiển nhạc (ẩn ở bước 1, hiện từ bước 2) */}
+      {step > 1 && (
+        <button 
+          onClick={toggleMusic}
+          className="absolute top-4 right-4 z-50 bg-white px-4 py-2 rounded-full shadow-md text-sm font-semibold text-rose-500 hover:bg-rose-50 transition"
+        >
+          {isPlaying ? '🎵 Đang phát' : '🔇 Tắt nhạc'}
+        </button>
+      )}
+
+      {/* Hiệu ứng pháo giấy ở bước chốt đơn */}
+      {step === 6 && (
+        <Confetti 
+          width={windowDimensions.width} 
+          height={windowDimensions.height} 
+          recycle={false} 
+          numberOfPieces={600} 
+        />
+      )}
+      
+      {/* ---------------- KẾT THÚC PHẦN ÂM THANH & HIỆU ỨNG ---------------- */}
+
       {/* BƯỚC 1: LỜI MỜI */}
       {step === 1 && (
         <div className="text-center z-10 flex flex-col items-center w-full">
@@ -101,15 +140,12 @@ export default function DateInvitation() {
           {/* Vùng chứa 2 nút Có / Không */}
           <div className="flex flex-wrap items-center justify-center gap-4 relative w-full h-40">
             
-            {/* Nút CÓ to dần (giới hạn kích thước) và giữ màu hồng */}
+            {/* Nút CÓ */}
             <button 
               onClick={handleYesClick}
               style={{ 
-                // Tăng chậm hơn và giới hạn size chữ tối đa là 60px
                 fontSize: `${Math.min(noCount * 8 + 20, 60)}px`,
-                // Giới hạn padding tối đa để không bị quá khổ
                 padding: `${Math.min(noCount * 6 + 12, 36)}px ${Math.min(noCount * 8 + 32, 64)}px`,
-                // Quan trọng: Đảm bảo nút không bao giờ bự hơn 90% chiều rộng màn hình
                 maxWidth: '90vw' 
               }}
               className="bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-xl shadow-xl transition-all duration-200 ease-in-out z-20 text-center"
@@ -117,7 +153,7 @@ export default function DateInvitation() {
               Dạ đi chớ! 🥰
             </button>
 
-            {/* Nút KHÔNG màu xám, chạy trốn và đổi chữ */}
+            {/* Nút KHÔNG */}
             <button 
               style={noButtonStyle}
               onMouseEnter={handleNoInteraction} 
@@ -219,6 +255,7 @@ export default function DateInvitation() {
           <p className="mt-8 text-rose-400 italic text-sm">Hãy chụp màn hình chiếc vé này để làm bằng chứng nhé ^^</p>
         </div>
       )}
+
     </div>
   );
 }
