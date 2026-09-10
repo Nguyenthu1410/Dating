@@ -173,7 +173,7 @@ export default function DateInvitation() {
           <div className="flex flex-wrap justify-center gap-6 md:gap-8">
             <PolaroidCard label="Xem phim rạp" emoji="🍿" rotateClass="-rotate-3" onClick={() => handleSelect('activity', 'Xem phim')} />
             <PolaroidCard label="Cà phê chill chill" emoji="☕" rotateClass="rotate-2" onClick={() => handleSelect('activity', 'Cà phê')} />
-            <PolaroidCard label="Đạp xe ngắm hoàng hôn" emoji="🚴‍♀️" rotateClass="-rotate-1" onClick={() => handleSelect('activity', 'Đạp xe')} />
+            <PolaroidCard label="Tô tượng" emoji="🎨" rotateClass="-rotate-1" onClick={() => handleSelect('activity', 'Tô tượng')} />
           </div>
         </div>
       )}
@@ -195,9 +195,9 @@ export default function DateInvitation() {
         <div className="text-center animate-fade-in">
           <h2 className="text-3xl font-bold text-rose-500 mb-8">Cái bụng đói muốn ăn gì ta?</h2>
           <div className="flex flex-wrap justify-center gap-6 md:gap-8">
-            <PolaroidCard label="Sushi / Đồ Nhật" emoji="🍣" rotateClass="-rotate-3" onClick={() => handleSelect('food', 'Sushi')} />
-            <PolaroidCard label="Thịt nướng xèo xèo" emoji="🥩" rotateClass="rotate-1" onClick={() => handleSelect('food', 'Thịt nướng')} />
-            <PolaroidCard label="Ăn vặt / Ốc" emoji="🐌" rotateClass="-rotate-2" onClick={() => handleSelect('food', 'Ốc')} />
+            <PolaroidCard label="Pizza" emoji="🍕" rotateClass="-rotate-3" onClick={() => handleSelect('food', 'Pizza')} />
+            <PolaroidCard label="Thịt nướng xèo xèo" emoji="🍖" rotateClass="rotate-1" onClick={() => handleSelect('food', 'Thịt nướng')} />
+            <PolaroidCard label="Lẩu Thái" emoji="🍲" rotateClass="-rotate-2" onClick={() => handleSelect('food', 'Lẩu Thái')} />
           </div>
         </div>
       )}
