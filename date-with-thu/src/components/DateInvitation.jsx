@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Confetti from 'react-confetti';
+import html2canvas from 'html2canvas';
 import { useDateInvitationLogic } from './useDateInvitationLogic'; 
 
 // ==========================================
@@ -22,7 +23,7 @@ const PolaroidCard = ({ label, emoji, rotateClass, onClick }) => (
 // COMPONENT UI: VÉ HẸN HÒ ẢO
 // ==========================================
 const VirtualTicket = ({ formData }) => (
-  <div className="flex w-full max-w-2xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden mt-6 transform hover:scale-105 transition-transform duration-500 text-left">
+  <div className="flex w-full max-w-2xl mx-auto bg-white rounded-xl shadow-2xl overflow-hidden transform hover:scale-105 transition-transform duration-500 text-left">
     <div className="bg-rose-500 w-1/4 p-4 flex flex-col justify-center items-center border-r-4 border-dashed border-white relative">
       <div className="absolute -top-3 -right-3 w-6 h-6 bg-[#fdf2f8] rounded-full"></div>
       <div className="absolute -bottom-3 -right-3 w-6 h-6 bg-[#fdf2f8] rounded-full"></div>
@@ -82,31 +83,68 @@ export default function DateInvitation() {
     handleTimeSelect,     
     confirmCustomDate,    
     handleYesClick,
-    toggleMusic
+    toggleMusic,
+    handleBack // Đảm bảo đã thêm hàm này ở useDateInvitationLogic.js
   } = useDateInvitationLogic();
+
+  const ticketRef = useRef(null);
+
+  // Hàm xử lý tải vé về máy
+  const handleDownloadTicket = async () => {
+    if (!ticketRef.current) return;
+    const canvas = await html2canvas(ticketRef.current, { scale: 2, backgroundColor: '#fdf2f8' });
+    const dataUrl = canvas.toDataURL('image/png');
+    const link = document.createElement('a');
+    link.href = dataUrl;
+    link.download = 'Ve_Hen_Ho_Cua_Chung_Minh.png';
+    link.click();
+  };
 
   return (
     <div className="min-h-screen bg-[#fdf2f8] flex flex-col items-center justify-center p-4 relative overflow-hidden font-sans">
-      
-      {/* ---------------- THÊM LẠI ÂM THANH & HIỆU ỨNG TẠI ĐÂY ---------------- */}
       
       {/* Nhạc nền */}
       <audio ref={audioRef} loop>
         <source src="/bg_music.mp3" type="audio/mpeg" />
       </audio>
 
-      {/* Nút điều khiển nhạc (ẩn ở bước 1, hiện từ bước 2) */}
+      {/* ---------------- UI HEADER (BACK & PROGRESS) ---------------- */}
+      
+      {step > 1 && step < 7 && (
+        <>
+          {/* Nút Quay Lại */}
+          <button 
+            onClick={handleBack}
+            className="absolute top-4 left-4 z-50 bg-white/70 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm text-sm font-semibold text-gray-500 hover:bg-rose-50 hover:text-rose-500 transition flex items-center gap-1"
+          >
+            <span>&larr;</span> Quay lại
+          </button>
+
+          {/* Thanh Tiến Trình (Trái tim) */}
+          <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-50 flex gap-2">
+            {[2, 3, 4, 5, 6].map((s) => (
+              <span key={s} className="text-xl transition-all duration-500">
+                {step >= s ? '💖' : '🤍'}
+              </span>
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* Nút điều khiển nhạc */}
       {step > 1 && (
         <button 
           onClick={toggleMusic}
-          className="absolute top-4 right-4 z-50 bg-white px-4 py-2 rounded-full shadow-md text-sm font-semibold text-rose-500 hover:bg-rose-50 transition"
+          className="absolute top-4 right-4 z-50 bg-white/70 backdrop-blur-sm px-4 py-2 rounded-full shadow-sm text-sm font-semibold text-rose-500 hover:bg-rose-50 transition"
         >
           {isPlaying ? '🎵 Đang phát' : '🔇 Tắt nhạc'}
         </button>
       )}
+      
+      {/* ---------------- KẾT THÚC UI HEADER ---------------- */}
 
-      {/* Hiệu ứng pháo giấy ở bước chốt đơn */}
-      {step === 6 && (
+      {/* Hiệu ứng pháo giấy */}
+      {step === 7 && (
         <Confetti 
           width={windowDimensions.width} 
           height={windowDimensions.height} 
@@ -114,14 +152,10 @@ export default function DateInvitation() {
           numberOfPieces={600} 
         />
       )}
-      
-      {/* ---------------- KẾT THÚC PHẦN ÂM THANH & HIỆU ỨNG ---------------- */}
 
       {/* BƯỚC 1: LỜI MỜI */}
       {step === 1 && (
         <div className="text-center z-10 flex flex-col items-center w-full">
-          
-          {/* Giao diện khung ảnh Polaroid có trái tim bay */}
           <div className="relative bg-white p-3 pb-8 md:p-4 md:pb-10 shadow-xl -rotate-3 hover:rotate-0 hover:scale-105 transition-transform duration-300 mb-8 w-56 md:w-64 rounded-sm border border-gray-100 flex flex-col items-center">
             <img 
               src="/cat_date.png" 
@@ -137,10 +171,7 @@ export default function DateInvitation() {
             Kỷ niệm 2 năm rồi, đi date với anh nhé? 💕
           </h1>
           
-          {/* Vùng chứa 2 nút Có / Không */}
           <div className="flex flex-wrap items-center justify-center gap-4 relative w-full h-40">
-            
-            {/* Nút CÓ */}
             <button 
               onClick={handleYesClick}
               style={{ 
@@ -153,7 +184,6 @@ export default function DateInvitation() {
               Dạ đi chớ! 🥰
             </button>
 
-            {/* Nút KHÔNG */}
             <button 
               style={noButtonStyle}
               onMouseEnter={handleNoInteraction} 
@@ -166,10 +196,21 @@ export default function DateInvitation() {
         </div>
       )}
 
-      {/* BƯỚC 2: HOẠT ĐỘNG */}
+      {/* BƯỚC 2: KHOẢNG CÁCH */}
       {step === 2 && (
         <div className="text-center animate-fade-in">
-          <h2 className="text-3xl font-bold text-rose-500 mb-8">Hôm đó chúng mình làm gì nhỉ?</h2>
+          <h2 className="text-3xl font-bold text-rose-500 mb-8 mt-12 md:mt-0">Công chúa muốn đi gần hay đi xa đổi gió nè?</h2>
+          <div className="flex flex-wrap justify-center gap-6 md:gap-8">
+            <PolaroidCard label="Đi gần (Dĩ An)" emoji="🛵" rotateClass="-rotate-3" onClick={() => handleSelect('distance', 'Đi gần')} />
+            <PolaroidCard label="Đi xa đổi gió" emoji="🚀" rotateClass="rotate-2" onClick={() => handleSelect('distance', 'Đi xa')} />
+          </div>
+        </div>
+      )}
+
+      {/* BƯỚC 3: HOẠT ĐỘNG */}
+      {step === 3 && (
+        <div className="text-center animate-fade-in">
+          <h2 className="text-3xl font-bold text-rose-500 mb-8 mt-12 md:mt-0">Hôm đó chúng mình làm gì nhỉ?</h2>
           <div className="flex flex-wrap justify-center gap-6 md:gap-8">
             <PolaroidCard label="Xem phim rạp" emoji="🍿" rotateClass="-rotate-3" onClick={() => handleSelect('activity', 'Xem phim')} />
             <PolaroidCard label="Cà phê chill chill" emoji="☕" rotateClass="rotate-2" onClick={() => handleSelect('activity', 'Cà phê')} />
@@ -178,22 +219,30 @@ export default function DateInvitation() {
         </div>
       )}
 
-      {/* BƯỚC 3: ĐỊA ĐIỂM (TỐI TẠI DĨ AN) */}
-      {step === 3 && (
+      {/* BƯỚC 4: ĐỊA ĐIỂM */}
+      {step === 4 && (
         <div className="text-center animate-fade-in">
-          <h2 className="text-3xl font-bold text-rose-500 mb-8">Tối đó mình dạo quanh góc nào đây ta?</h2>
-          <div className="flex flex-wrap justify-center gap-6 md:gap-8">
-            <PolaroidCard label="Lượn TTHC Dĩ An" emoji="🌃" rotateClass="rotate-1" onClick={() => handleSelect('location', 'Trung tâm Hành chính Dĩ An')} />
-            <PolaroidCard label="Dạo Charm City" emoji="✨" rotateClass="-rotate-2" onClick={() => handleSelect('location', 'Khu Charm City / Vincom')} />
-            <PolaroidCard label="Food tour Chợ đêm" emoji="🍢" rotateClass="rotate-3" onClick={() => handleSelect('location', 'Chợ đêm Làng ĐH')} />
-          </div>
+          <h2 className="text-3xl font-bold text-rose-500 mb-8 mt-12 md:mt-0">Tối đó mình dạo quanh góc nào đây ta?</h2>
+          {formData.distance === 'Đi xa' ? (
+            <div className="flex flex-wrap justify-center gap-6 md:gap-8">
+              <PolaroidCard label="Dạo Gò Vấp" emoji="🌆" rotateClass="rotate-1" onClick={() => handleSelect('location', 'Gò Vấp')} />
+              <PolaroidCard label="Lượn Bình Thạnh" emoji="🏙️" rotateClass="-rotate-2" onClick={() => handleSelect('location', 'Bình Thạnh')} />
+              <PolaroidCard label="Lên Quận 1" emoji="🎇" rotateClass="rotate-3" onClick={() => handleSelect('location', 'Quận 1')} />
+            </div>
+          ) : (
+            <div className="flex flex-wrap justify-center gap-6 md:gap-8">
+              <PolaroidCard label="Lượn TTHC Dĩ An" emoji="🌃" rotateClass="rotate-1" onClick={() => handleSelect('location', 'Trung tâm Hành chính Dĩ An')} />
+              <PolaroidCard label="Dạo Charm City" emoji="✨" rotateClass="-rotate-2" onClick={() => handleSelect('location', 'Khu Charm City / Vincom')} />
+              <PolaroidCard label="Food tour Chợ đêm" emoji="🍢" rotateClass="rotate-3" onClick={() => handleSelect('location', 'Chợ đêm Làng ĐH')} />
+            </div>
+          )}
         </div>
       )}
 
-      {/* BƯỚC 4: ĂN UỐNG */}
-      {step === 4 && (
+      {/* BƯỚC 5: ĂN UỐNG */}
+      {step === 5 && (
         <div className="text-center animate-fade-in">
-          <h2 className="text-3xl font-bold text-rose-500 mb-8">Cái bụng đói muốn ăn gì ta?</h2>
+          <h2 className="text-3xl font-bold text-rose-500 mb-8 mt-12 md:mt-0">Cái bụng đói muốn ăn gì ta?</h2>
           <div className="flex flex-wrap justify-center gap-6 md:gap-8">
             <PolaroidCard label="Pizza" emoji="🍕" rotateClass="-rotate-3" onClick={() => handleSelect('food', 'Pizza')} />
             <PolaroidCard label="Thịt nướng xèo xèo" emoji="🍖" rotateClass="rotate-1" onClick={() => handleSelect('food', 'Thịt nướng')} />
@@ -202,10 +251,10 @@ export default function DateInvitation() {
         </div>
       )}
 
-      {/* BƯỚC 5: THỜI GIAN */}
-      {step === 5 && (
+      {/* BƯỚC 6: THỜI GIAN */}
+      {step === 6 && (
         <div className="text-center animate-fade-in w-full max-w-lg">
-          <h2 className="text-3xl font-bold text-rose-500 mb-8">Khi nào thì mình lên đồ?</h2>
+          <h2 className="text-3xl font-bold text-rose-500 mb-8 mt-12 md:mt-0">Khi nào thì mình lên đồ?</h2>
           
           {!showDatePicker ? (
             <div className="flex flex-wrap justify-center gap-6 md:gap-8">
@@ -229,7 +278,7 @@ export default function DateInvitation() {
                   onClick={() => setShowDatePicker(false)}
                   className="px-6 py-2 rounded-full font-bold text-gray-500 bg-gray-100 hover:bg-gray-200 transition"
                 >
-                  Quay lại
+                  Đóng lịch
                 </button>
                 <button 
                   onClick={confirmCustomDate}
@@ -244,15 +293,25 @@ export default function DateInvitation() {
         </div>
       )}
 
-      {/* BƯỚC 6: TỔNG KẾT */}
-      {step === 6 && (
+      {/* BƯỚC 7: TỔNG KẾT & TẢI VÉ */}
+      {step === 7 && (
         <div className="text-center animate-fade-in w-full max-w-3xl px-4 z-10">
-          <h1 className="text-3xl md:text-5xl font-bold text-rose-500 mb-2">Yayyy! Đã chốt kèo! 🎉</h1>
+          <h1 className="text-3xl md:text-5xl font-bold text-rose-500 mb-2 mt-8 md:mt-0">Yayyy! Đã chốt kèo! 🎉</h1>
           <p className="text-gray-600 mb-6 font-medium">Hẹn gặp công chúa của anh vào ngày hôm đó nha!</p>
           
-          <VirtualTicket formData={formData} />
+          {/* Bọc vé vào một div có ref để chụp lại ảnh */}
+          <div ref={ticketRef} className="py-2 px-1">
+            <VirtualTicket formData={formData} />
+          </div>
           
-          <p className="mt-8 text-rose-400 italic text-sm">Hãy chụp màn hình chiếc vé này để làm bằng chứng nhé ^^</p>
+          {/* Nút tải ảnh */}
+          <button 
+            onClick={handleDownloadTicket}
+            className="mt-8 bg-rose-500 hover:bg-rose-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition-all hover:scale-105 active:scale-95 flex items-center justify-center gap-2 mx-auto"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+            Tải vé về máy
+          </button>
         </div>
       )}
 
