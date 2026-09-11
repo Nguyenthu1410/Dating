@@ -225,8 +225,8 @@ export default function DateInvitation() {
           <h2 className="text-3xl font-bold text-rose-500 mb-8 mt-12 md:mt-0">Tối đó mình dạo quanh góc nào đây ta?</h2>
           {formData.distance === 'Đi xa' ? (
             <div className="flex flex-wrap justify-center gap-6 md:gap-8">
-              <PolaroidCard label="Dạo Gò Vấp" emoji="🌆" rotateClass="rotate-1" onClick={() => handleSelect('location', 'Gò Vấp')} />
-              <PolaroidCard label="Lượn Bình Thạnh" emoji="🏙️" rotateClass="-rotate-2" onClick={() => handleSelect('location', 'Bình Thạnh')} />
+              <PolaroidCard label="Dạo Thủ Đức" emoji="🌆" rotateClass="rotate-1" onClick={() => handleSelect('location', 'Thủ Đức')} />
+              <PolaroidCard label="Lượn Gò Vấp " emoji="🏙️" rotateClass="-rotate-2" onClick={() => handleSelect('location', 'Gò vấp')} />
               <PolaroidCard label="Lên Quận 1" emoji="🎇" rotateClass="rotate-3" onClick={() => handleSelect('location', 'Quận 1')} />
             </div>
           ) : (
