@@ -214,7 +214,7 @@ export default function DateInvitation() {
           <div className="flex flex-wrap justify-center gap-6 md:gap-8">
             <PolaroidCard label="Xem phim rạp" emoji="🍿" rotateClass="-rotate-3" onClick={() => handleSelect('activity', 'Xem phim')} />
             <PolaroidCard label="Cà phê chill chill" emoji="☕" rotateClass="rotate-2" onClick={() => handleSelect('activity', 'Cà phê')} />
-            <PolaroidCard label="Tô tượng" emoji="🎨" rotateClass="-rotate-1" onClick={() => handleSelect('activity', 'Tô tượng')} />
+            <PolaroidCard label="Tô tượng" emoji="🎨" rotateClass="-rotate-1" onClick={() => handleSelect('activity', 'Workshop')} />
           </div>
         </div>
       )}
@@ -261,10 +261,11 @@ export default function DateInvitation() {
               <PolaroidCard label="Thứ 7 tuần này" emoji="📅" rotateClass="rotate-2" onClick={() => handleTimeSelect('Thứ 7')} />
               <PolaroidCard label="Chủ Nhật tuần này" emoji="☀️" rotateClass="-rotate-1" onClick={() => handleTimeSelect('Chủ Nhật')} />
               <PolaroidCard label="Chọn ngày cụ thể" emoji="✍️" rotateClass="rotate-3" onClick={() => handleTimeSelect('custom')} />
+              <PolaroidCard label="A chọn đi" emoji="🫣" rotateClass="-rotate-2" onClick={() => handleTimeSelect('A chọn đi')} />
             </div>
           ) : (
             <div className="bg-white p-8 rounded-2xl shadow-xl border border-rose-100 flex flex-col items-center gap-6 animate-fade-in mx-4">
-              <p className="text-xl text-gray-700 font-bold">Bạn gái muốn đi ngày nào nè? 🥰</p>
+              <p className="text-xl text-gray-700 font-bold">Em bé muốn đi ngày nào nè? 🥰</p>
               
               <input 
                 type="date" 
