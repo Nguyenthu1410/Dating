@@ -214,7 +214,7 @@ export default function DateInvitation() {
           <div className="flex flex-wrap justify-center gap-6 md:gap-8">
             <PolaroidCard label="Xem phim rạp" emoji="🍿" rotateClass="-rotate-3" onClick={() => handleSelect('activity', 'Xem phim')} />
             <PolaroidCard label="Cà phê chill chill" emoji="☕" rotateClass="rotate-2" onClick={() => handleSelect('activity', 'Cà phê')} />
-            <PolaroidCard label="Tô tượng" emoji="🎨" rotateClass="-rotate-1" onClick={() => handleSelect('activity', 'Workshop')} />
+            <PolaroidCard label="Workshop" emoji="🎨" rotateClass="-rotate-1" onClick={() => handleSelect('activity', 'Workshop')} />
           </div>
         </div>
       )}
