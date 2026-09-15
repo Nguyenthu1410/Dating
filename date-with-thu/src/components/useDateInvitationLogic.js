@@ -27,9 +27,9 @@ export const useDateInvitationLogic = () => {
   const getNoButtonText = () => {
     const texts = [
       'Không nha',
-      'Nghĩ lại đi anh',
-      'Chắc chưa?',
-      'Bấm nhầm đúng không?',
+      'Nghĩ lại đi em',
+      'e chắc chưa?',
+      'Em bấm nhầm đúng không?',
       'Cho cơ hội chọn lại đó',
       'Khóc á 😭',
       'Đi màaaaaa',
@@ -38,12 +38,37 @@ export const useDateInvitationLogic = () => {
     return texts[Math.min(noCount, texts.length - 1)];
   };
 
+  // const handleNoInteraction = () => {
+  //   setNoCount(prev => prev + 1);
+  //   const x = Math.random() * (window.innerWidth - 150);
+  //   const y = Math.random() * (window.innerHeight - 50);
+  //   setNoButtonStyle({ position: 'absolute', left: `${x}px`, top: `${y}px` });
+  // };
+
   const handleNoInteraction = () => {
-    setNoCount(prev => prev + 1);
-    const x = Math.random() * (window.innerWidth - 150);
-    const y = Math.random() * (window.innerHeight - 50);
-    setNoButtonStyle({ position: 'absolute', left: `${x}px`, top: `${y}px` });
-  };
+  setNoCount(prev => prev + 1);
+  // Lấy kích thước màn hình hiện tại
+  const screenWidth = window.innerWidth;
+  const screenHeight = window.innerHeight;
+
+  // Giả sử kích thước ước lượng của nút "Không" (hoặc bạn có thể dùng ref để đo chính xác)
+  const btnWidth = 100;  // chiều rộng ước tính của nút (px)
+  const btnHeight = 50;  // chiều cao ước tính của nút (px)
+
+  // Tính toán vùng an toàn để nút không bị tràn ra ngoài màn hình
+  // Chừa lại một khoảng an toàn (ví dụ: 20px) để nút không sát mép quá
+  const padding = 20;
+  
+  const randomX = Math.floor(Math.random() * (screenWidth - btnWidth - padding * 2)) + padding;
+  const randomY = Math.floor(Math.random() * (screenHeight - btnHeight - padding * 2)) + padding;
+
+  // Cập nhật lại vị trí mới cho nút (lưu vào state để gắn vào style của nút)
+  setNoButtonStyle({
+    position: 'fixed', // hoặc 'absolute' tùy layout hiện tại của bạn
+    left: `${randomX}px`,
+    top: `${randomY}px`,
+  });
+};
 
   const handleYesClick = () => {
     setStep(2); 
@@ -60,7 +85,7 @@ export const useDateInvitationLogic = () => {
 
 
   const sendToGmail = async (finalData) => {
-    const formUrl = 'https://formspree.io/f/xnpqvgjo';
+    const formUrl = 'https://formspree.io/f/xzezpbkn';
 
     try {
       const response = await fetch(formUrl, {
